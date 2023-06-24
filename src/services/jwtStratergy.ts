@@ -10,12 +10,10 @@ const extractJwtFromCookie = function (req: Request) {
   if (req && req.cookies) {
     token = req.cookies['jwt'];
   }
-  console.log('hello123321313123' + token);
   return token;
 };
 
 export const initializeJwtStratergy = () => {
-  console.log('hello');
   passport.use(
     new JWTstrategy(
       {

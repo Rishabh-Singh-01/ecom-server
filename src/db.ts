@@ -1,14 +1,11 @@
 import mysql from 'mysql2/promise';
 
-// import { db } from './db./ts';
-
 const dbHost = process.env.DB_HOST || 'localhost';
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
 
 // creating connection with server
-
 let db: mysql.Pool;
 (async () => {
   console.info('Configuring the database connection...');

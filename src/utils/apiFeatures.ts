@@ -1,6 +1,6 @@
 import { AppError } from './AppError';
 import { getSqlOperator } from './helper';
-import { ErrorMessages } from '../Constants.ts/ServiceConstant';
+import { ErrorMessages } from '../constants/ServiceConstant';
 
 export class APIFeatures {
   query: any;

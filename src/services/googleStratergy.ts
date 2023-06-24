@@ -14,7 +14,8 @@ export const initializeGoogleStartergy = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID!,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        callbackURL: 'http://localhost:8080/api/v1/auth/google/callback',
+        callbackURL: `${process.env
+          .SERVER_SIDE_URI!}/api/v1/auth/google/callback`,
         passReqToCallback: true,
       },
       async function (req, accessToken, refreshToken, profile, done) {

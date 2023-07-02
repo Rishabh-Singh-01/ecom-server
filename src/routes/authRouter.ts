@@ -1,10 +1,8 @@
 import express, { Express, Request, NextFunction, Response } from 'express';
 import passport from 'passport';
-import { initializeGoogleStartergy } from '../services/googleStratergy';
 import { successLoginAuth } from '../controllers/authController';
 export const router = express.Router();
 
-initializeGoogleStartergy();
 // Mouting routes for failed auth
 // router.get('/login/failed', failedLoginAuth);
 

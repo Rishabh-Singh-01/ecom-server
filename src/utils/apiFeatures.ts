@@ -99,7 +99,7 @@ export class APIFeatures {
     if (this.query.limit !== undefined && typeof this.query.limit !== 'string')
       throw new AppError(ErrorMessages.PROVIDE_VALID_PARAMETERS, 400);
     const page = +(this.query.page || '1');
-    const limit = +(this.query.limit || '2');
+    const limit = +(this.query.limit || '5');
     const skip = (page - 1) * limit;
 
     this.queryString += ' LIMIT ? OFFSET ?';

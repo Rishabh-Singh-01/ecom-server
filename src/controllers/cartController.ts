@@ -4,12 +4,14 @@ import db from '../db';
 import { RowDataPacket } from 'mysql2/promise';
 import { cartQuery } from '../query/cartQuery';
 import { AppError } from '../utils/AppError';
+import { UserWithIdInterface } from '../model/customUserReq';
 
 export const getCartItems = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user);
     // validating userId
     // :TODO(q) - Cond where only logged in user id and userId from params match so only logged in user can see its only cart
-    const userId = req.params.id;
+    const { id: userId } = req.user as UserWithIdInterface;
     if (!userId || typeof userId !== 'string')
       throw new AppError('Unauthorized request', 401);
 
@@ -34,7 +36,7 @@ export const addItemToCart = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     // validating userId
     // :TODO(q) - Cond where only logged in user id and userId from params match so only logged in user can see its only cart
-    const userId = req.params.id;
+    const { id: userId } = req.user as UserWithIdInterface;
     if (!userId || typeof userId !== 'string')
       throw new AppError('Unauthorized request', 401);
 
@@ -72,7 +74,7 @@ export const updateItemInCart = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     // validating userId
     // :TODO(q) - Cond where only logged in user id and userId from params match so only logged in user can see its only cart
-    const userId = req.params.id;
+    const { id: userId } = req.user as UserWithIdInterface;
     if (!userId || typeof userId !== 'string')
       throw new AppError('Unauthorized request', 401);
 
@@ -110,7 +112,7 @@ export const deleteItemFromCart = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     // validating userId
     // :TODO(q) - Cond where only logged in user id and userId from params match so only logged in user can see its only cart
-    const userId = req.params.id;
+    const { id: userId } = req.user as UserWithIdInterface;
     if (!userId || typeof userId !== 'string')
       throw new AppError('Unauthorized request', 401);
 

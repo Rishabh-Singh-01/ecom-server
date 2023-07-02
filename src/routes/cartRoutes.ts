@@ -10,7 +10,7 @@ import {
 export const router = Router();
 
 router
-  .route('/:id')
+  .route('/')
   .get(passport.authenticate('jwt', { session: false }), getCartItems)
   .post(passport.authenticate('jwt', { session: false }), addItemToCart)
   .put(passport.authenticate('jwt', { session: false }), updateItemInCart)

@@ -23,7 +23,7 @@ export const initializeJwtStratergy = () => {
       async (token, done) => {
         try {
           console.log(token);
-          return done(null, token.id);
+          return done(null, { id: token.id });
         } catch (error) {
           console.error('this is a error');
           done(null, false, new AppError('Unauthorized request', 401));

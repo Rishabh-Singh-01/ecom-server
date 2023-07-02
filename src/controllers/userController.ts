@@ -1,11 +1,34 @@
 import { Request, Response, NextFunction } from 'express';
 import { RowDataPacket } from 'mysql2/promise';
-import { userQuery } from '../query/userQuery';
-import jwt from 'jsonwebtoken';
 
 import db from '../db';
 import { AppError } from '../utils/AppError';
 import { catchAsyncError } from '../utils/catchAsyncError';
+
+// export const getMyDetails = catchAsyncError(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     // validating userId
+//     // :TODO(q) - Cond where only logged in user id and userId from params match so only logged in user can see its only cart
+//     const userId = req.params.id;
+//     if (!userId || typeof userId !== 'string')
+//       throw new AppError('Unauthorized request', 401);
+
+//     // feching cart items per userId
+//     const [rows] = await db.query<RowDataPacket[]>(
+//       cartQuery.getItemsFromCart,
+//       userId
+//     );
+
+//     // sending the items
+//     res.status(200).json({
+//       status: 'success',
+//       results: rows.length,
+//       data: {
+//         data: rows,
+//       },
+//     });
+//   }
+// );
 
 // Controller for checking if user is present or not
 // export const getUserByEmail = catchAsyncError(

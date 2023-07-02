@@ -13,6 +13,7 @@ import { router as cartRoutes } from './routes/cartRoutes';
 
 import { AppError } from './utils/AppError';
 import { globalErrorHandler } from './controllers/errorController';
+import { initializeGoogleStartergy } from './services/googleStratergy';
 import { initializeJwtStratergy } from './services/jwtStratergy';
 
 // Intilainzing express
@@ -29,6 +30,7 @@ app.use(
 
 // Enabling passportjs for auth
 app.use(passport.initialize());
+initializeGoogleStartergy();
 initializeJwtStratergy();
 
 // Morgan for loggers

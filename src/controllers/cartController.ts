@@ -42,25 +42,49 @@ export const addItemToCart = catchAsyncError(
 
     // validating the req body
     // :TODO(p) - Decide how much quantity can be booked in one time
-    const { productId, quantity } = req.body;
+    const { productId, quantity, size } = req.body;
     if (
       !productId ||
       typeof productId !== 'string' ||
       !quantity ||
       quantity <= 0 ||
-      typeof quantity !== 'number'
+      typeof quantity !== 'number' ||
+      !size ||
+      typeof size !== 'string'
     )
       throw new AppError('Please provide valid Cart Item details', 400);
 
     if (quantity > 5)
       throw new AppError('More quantity cannot be added for this item', 400);
 
-    // inserting product in the cart table
-    const [rows] = await db.query<RowDataPacket[]>(cartQuery.addItemToCart, [
-      userId,
-      productId,
-      quantity,
-    ]);
+    if (
+      size !== 'S' &&
+      size !== 'M' &&
+      size !== 'L' &&
+      size !== 'XL' &&
+      size !== 'XXL'
+    )
+      throw new AppError('This type of size is not available', 400);
+
+    //checking if product is alredy added in cart (with some other variations)
+    const [getCartProduct] = await db.query<RowDataPacket[]>(
+      cartQuery.getItemFromCartUsingProductId,
+      [userId, productId]
+    );
+
+    if (getCartProduct.length === 0) {
+      // inserting product in the cart table if no product available
+      const [_] = await db.query<RowDataPacket[]>(cartQuery.addItemToCart, [
+        userId,
+        productId,
+      ]);
+    }
+
+    // inserting product variations in the cart
+    const [rows] = await db.query<RowDataPacket[]>(
+      cartQuery.addItemVariationToCart,
+      [userId, productId, size, quantity]
+    );
 
     // sending the items
     res.status(201).json({
@@ -80,7 +104,7 @@ export const updateItemInCart = catchAsyncError(
 
     // validating the req body
     // :TODO(p) - Decide how much quantity can be booked in one time
-    const { productId, quantity } = req.body;
+    const { productId, quantity, size } = req.body;
     if (
       !productId ||
       typeof productId !== 'string' ||
@@ -93,11 +117,39 @@ export const updateItemInCart = catchAsyncError(
     if (quantity > 5)
       throw new AppError('More quantity cannot be added for this item', 400);
 
+    if (
+      size !== 'S' &&
+      size !== 'M' &&
+      size !== 'L' &&
+      size !== 'XL' &&
+      size !== 'XXL'
+    )
+      throw new AppError('Please provide valid Cart Item details', 400);
+
+    /*
+    // checking product exists or not
+    const getCartProductPromise = db.query<RowDataPacket[]>(
+      cartQuery.getItemFromCartUsingProductId,
+      [userId, productId]
+    );
+
+    // checking whether its variation exist or not
+    const getCartProductVariationPromise = db.query<RowDataPacket[]>(
+      cartQuery.getItemVariationFromCart,
+      [userId, productId, size]
+    );
+
+    // fetching promises in parallel
+    const promises = [getCartProductPromise, getCartProductVariationPromise];
+    const result = await Promise.all(promises);
+    */
+
     // updating product quantity in the cart table
     const [rows] = await db.query<RowDataPacket[]>(cartQuery.updateItemInCart, [
       quantity,
       userId,
       productId,
+      size,
     ]);
 
     // sending the items
@@ -117,14 +169,22 @@ export const deleteItemFromCart = catchAsyncError(
       throw new AppError('Unauthorized request', 401);
 
     // validating the req body
-    const { productId } = req.body;
+    const { productId, size } = req.body;
     if (!productId || typeof productId !== 'string')
+      throw new AppError('Please provide valid Cart Item details', 400);
+    if (
+      size !== 'S' &&
+      size !== 'M' &&
+      size !== 'L' &&
+      size !== 'XL' &&
+      size !== 'XXL'
+    )
       throw new AppError('Please provide valid Cart Item details', 400);
 
     // deleting product in the cart table
     const [rows] = await db.query<RowDataPacket[]>(
       cartQuery.deleteItemFromCart,
-      [userId, productId]
+      [userId, productId, size]
     );
 
     // sending empty reponse

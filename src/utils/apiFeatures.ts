@@ -13,6 +13,7 @@ export class APIFeatures {
     'category_name',
     'size_name',
     'size_description',
+    'theme', // theme for selecting based on themes
   ];
   parameters: (string | number)[] = [];
 
@@ -31,10 +32,16 @@ export class APIFeatures {
         throw new AppError(ErrorMessages.PROVIDE_VALID_PARAMETERS, 400);
 
       // if the filter matches direct equals
-      if (field === 'category_name' || field === 'size_name') {
+      if (
+        field === 'category_name' ||
+        field === 'size_name' ||
+        field === 'theme'
+      ) {
         if (typeof this.query[field] !== 'string')
           throw new AppError(ErrorMessages.PROVIDE_VALID_PARAMETERS, 400);
-        this.queryString += ` AND ${field} = ?`;
+        let fieldName = field;
+        if (field === 'theme') fieldName = 'themes.title';
+        this.queryString += ` AND ${fieldName} = ?`;
         this.parameters.push(this.query[field]);
       }
 
@@ -42,7 +49,7 @@ export class APIFeatures {
       if (field === 'size_description' || field === 'name') {
         if (typeof this.query[field] !== 'string')
           throw new AppError(ErrorMessages.PROVIDE_VALID_PARAMETERS, 400);
-        this.queryString += ` AND ${field} LIKE '%?%'`;
+        this.queryString += ` AND ${field} LIKE Concat('%',?,'%')`;
         this.parameters.push(this.query[field]);
       }
 

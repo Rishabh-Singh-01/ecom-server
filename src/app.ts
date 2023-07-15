@@ -10,6 +10,7 @@ import { router as productRoutes } from './routes/productRouter';
 import { router as authRoutes } from './routes/authRouter';
 import { router as userRoutes } from './routes/userRoutes';
 import { router as cartRoutes } from './routes/cartRoutes';
+import { router as themeRoutes } from './routes/themeRouter';
 
 import { AppError } from './utils/AppError';
 import { globalErrorHandler } from './controllers/errorController';
@@ -42,6 +43,7 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/cart', cartRoutes);
+app.use('/api/v1/themes', themeRoutes);
 
 // Non defined Route
 app.all('*', (req, res, next) => {

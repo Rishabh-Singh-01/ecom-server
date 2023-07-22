@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
@@ -53,8 +51,4 @@ app.all('*', (req, res, next) => {
 // Global error handling route
 app.use(globalErrorHandler);
 
-// Setting up server
-const serverPort = process.env.SERVER_PORT || 8080;
-app.listen(serverPort, () =>
-  console.log(`Server is listening on Port - ${serverPort}`)
-);
+export default app;

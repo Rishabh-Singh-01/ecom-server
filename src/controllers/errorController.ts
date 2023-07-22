@@ -37,7 +37,5 @@ export const globalErrorHandler = (
 
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
-    sendErrorProd(err, res);
-  }
+  } else sendErrorProd(err, res);
 };

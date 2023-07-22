@@ -62,6 +62,16 @@ CREATE TABLE themes(
     FOREIGN KEY (product_category_id) REFERENCES product_categories(id)
 );
 
+-- setting up sex
+
+CREATE TABLE gender_categories(
+	id varchar(36) PRIMARY KEY,
+    title varchar(20) NOT NULL UNIQUE,
+    images text NOT NULL,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+	updated_at timestamp ON UPDATE CURRENT_TIMESTAMP,
+	deleted_at timestamp ON UPDATE CURRENT_TIMESTAMP
+);
 
 CREATE TABLE products (
    id varchar(36) PRIMARY KEY,
@@ -73,11 +83,13 @@ CREATE TABLE products (
    fabric text NOT NULL,
    category_id varchar(36) NOT NULL,
    theme_id varchar(36) NOT NULL,
+   gender_categories_id varchar(36) NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
 	updated_at timestamp ON UPDATE CURRENT_TIMESTAMP,
 	deleted_at timestamp ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES product_categories(id),
-    FOREIGN KEY (theme_id) REFERENCES themes(id)
+    FOREIGN KEY (theme_id) REFERENCES themes(id),
+    FOREIGN KEY (gender_categories_id) REFERENCES gender_categories(id)
 );
 
 CREATE TABLE inventory (
@@ -159,9 +171,16 @@ INSERT INTO themes(id,product_category_id,title,description,examples,image) VALU
     
 -- SELECT * FROM product_categories;
 
+-- ADDING gender_categories
+
+INSERT INTO gender_categories(id,title,images) VALUES
+	(uuid(),'MEN','previewgendercategory-men'),
+    (uuid(),'WOMEN','previewgendercategory-women'),
+    (uuid(),'UNISEX','previewgendercategory-unisex');
+
 -- ---------> INSERTING VALUES FOR INVENTORY AND PRODUCTS SEQUENTIALLY --
 
-INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id) VALUES 
+INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id,gender_categories_id) VALUES 
 	(uuid(),
     "Johan White T-Shirt Monster",
     "T shirt based on Monster Anime depicting classic white tee with high quality fabric",
@@ -170,7 +189,8 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     299,
     "Cotton:100",
     ( SELECT id FROM product_categories WHERE product_categories.category_name = "T-Shirts"),
-    ( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Hidden Gems')
+    ( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Hidden Gems'),
+    ( SELECT gender_categories.id FROM gender_categories WHERE gender_categories.title = 'MEN')
 );
 
  INSERT INTO inventory(product_id,size_id,quantity) VALUES 
@@ -183,7 +203,7 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     (SELECT id FROM sizes WHERE size_name = "M"), 
     5);
        
-INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id) VALUES 
+INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id,gender_categories_id) VALUES 
 	(uuid(),
     "Naruto Multicoloured T-Shirt Cotton",
     "Naruto Uzumaki & Saskue Uchiha T shirt based on Naruto Anime depicting trendy T-Shirt with high quality fabric",
@@ -192,7 +212,8 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     499,
     "Cotton:95#Polyester:5",
 	( SELECT id FROM product_categories WHERE product_categories.category_name = "T-Shirts"),
-	( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Timeless Legends')
+	( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Timeless Legends'),
+	( SELECT gender_categories.id FROM gender_categories WHERE gender_categories.title = 'UNISEX')
 );
 
  INSERT INTO inventory(product_id,size_id,quantity) VALUES 
@@ -200,7 +221,7 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     (SELECT id FROM sizes WHERE size_name = "M"), 
     15);
 
-INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id) VALUES 
+INSERT INTO products(id,name,description,images,previous_price,price,fabric,category_id,theme_id,gender_categories_id) VALUES 
 	(uuid(),
     "Asta Black Clover T-Shirt Polyester",
     "Asta in demonic form T-Shirt made for Sports with very breathable polyester fabric",
@@ -209,7 +230,8 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     399,
     "Polyester:100",
 	( SELECT id FROM product_categories WHERE product_categories.category_name = "T-Shirts"),
-	( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Modern Marvels')
+	( SELECT themes.id FROM themes JOIN product_categories ON themes.product_category_id = product_categories.id WHERE product_categories.category_name = "T-Shirts" AND themes.title = 'Modern Marvels'),
+	( SELECT gender_categories.id FROM gender_categories WHERE gender_categories.title = 'WOMEN')
 );
 
  INSERT INTO inventory(product_id,size_id,quantity) VALUES 
@@ -218,7 +240,7 @@ INSERT INTO products(id,name,description,images,previous_price,price,fabric,cate
     20);
 
 SELECT * FROM inventory;
-SELECT * FROM products;
+SELECT * FROM products join gender_categories on products.gender_categories_id = gender_categories.id where gender_categories.title = 'men';
 SELECT * FROM users;
 
 

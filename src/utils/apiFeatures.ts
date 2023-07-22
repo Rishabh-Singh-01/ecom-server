@@ -14,6 +14,7 @@ export class APIFeatures {
     'size_name',
     'size_description',
     'theme', // theme for selecting based on themes
+    'gender', // gender categories based
   ];
   parameters: (string | number)[] = [];
 
@@ -35,12 +36,14 @@ export class APIFeatures {
       if (
         field === 'category_name' ||
         field === 'size_name' ||
-        field === 'theme'
+        field === 'theme' ||
+        field === 'gender'
       ) {
         if (typeof this.query[field] !== 'string')
           throw new AppError(ErrorMessages.PROVIDE_VALID_PARAMETERS, 400);
         let fieldName = field;
         if (field === 'theme') fieldName = 'themes.title';
+        if (field === 'gender') fieldName = 'gender_categories.title';
         this.queryString += ` AND ${fieldName} = ?`;
         this.parameters.push(this.query[field]);
       }

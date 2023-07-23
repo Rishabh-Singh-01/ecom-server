@@ -5,7 +5,7 @@ module.exports = {
   clearMocks: true,
   coverageProvider: 'v8',
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
-  roots: ['<rootDir>/tests'],
+  roots: ['<rootDir>/__tests__'],
   setupFiles: ['dotenv/config'],
   verbose: true,
   displayName: {

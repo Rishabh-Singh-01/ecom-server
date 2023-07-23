@@ -1,0 +1,6 @@
+// Workaround to make sure __tests__ and vscode here doesnt give any linting error
+
+{
+  "extends": "../tsconfig.json",
+  "src": "**/*.ts"
+}

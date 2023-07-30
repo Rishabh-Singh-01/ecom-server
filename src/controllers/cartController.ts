@@ -68,7 +68,7 @@ export const addItemToCart = catchAsyncError(
 
     //checking if product is alredy added in cart (with some other variations)
     const [getCartProduct] = await db.query<RowDataPacket[]>(
-      cartQuery.getItemFromCartUsingProductId,
+      cartQuery.getItemFromCartWithoutVariationsUsingProductId,
       [userId, productId]
     );
 

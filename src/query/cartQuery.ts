@@ -1,4 +1,10 @@
 export const cartQuery = {
+  getItemFromCartWithoutVariationsUsingProductId: `SELECT 
+  cart_items.user_id,
+  cart_items.product_id
+  FROM cart_items
+  WHERE user_id = ?
+    AND product_id = ?;`,
   getItemsFromCart: `SELECT 
   cart_items.user_id,
   cart_items.product_id,

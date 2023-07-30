@@ -22,6 +22,7 @@ export const initializeGoogleStartergy = () => {
         const { name, email } = profile._json;
 
         try {
+          // :TODO(p) -- Think if direct connection needed to db or some users endpoint can work
           // CHECKING IF USER EXISTS OR NOT -- getUser
           const [userDetailsByEmail] = await db.query<RowDataPacket[]>(
             userQuery.getUserByEmail,

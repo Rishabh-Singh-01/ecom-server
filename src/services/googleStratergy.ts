@@ -26,7 +26,7 @@ export const initializeGoogleStartergy = () => {
           // CHECKING IF USER EXISTS OR NOT -- getUser
           const [userDetailsByEmail] = await db.query<RowDataPacket[]>(
             userQuery.getUserByEmail,
-            email
+            [email]
           );
 
           // checking if user exists returning success
@@ -42,7 +42,7 @@ export const initializeGoogleStartergy = () => {
           // retrieving the newly created user id for the token
           const [userDetails] = await db.query<RowDataPacket[]>(
             userQuery.getUserByEmail,
-            email
+            [email]
           );
 
           // checking if the user created is successfull , if not throw error
